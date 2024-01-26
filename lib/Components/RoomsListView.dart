@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:nfs_room_booking/Pages/ConfirmBookingPage.dart';
 import 'package:nfs_room_booking/Rooms/Room.dart';
+import 'package:nfs_room_booking/Users/User.dart';
 
 
 class RoomsListView extends StatefulWidget {
   final List<Room> rooms;
-  const RoomsListView({Key? key, required this.rooms}) : super(key: key);
+  final User user;
+  const RoomsListView({Key? key, required this.rooms, required this.user}) : super(key: key);
 
   @override
   State<RoomsListView> createState() => _RoomsListViewState();
@@ -54,7 +57,7 @@ class _RoomsListViewState extends State<RoomsListView> {
                         const SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            // Booking action
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> ConfirmBooking(room: widget.rooms[index], user: widget.user,)));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,

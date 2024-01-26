@@ -5,10 +5,6 @@ import 'package:nfs_room_booking/config.dart';
 
 class RoomRepository{
 
-  List<Room> _rooms = [];
-
-  List<Room> get rooms => _rooms;
-
   Future<Room> getRoomById(String id) async
   {
     final response = await http.get(Uri.parse("${Config.apiUrl}https://localhost:7256/api/v1/Room/GetById?id=$id"));
@@ -59,8 +55,7 @@ class RoomRepository{
     if(response.statusCode == 200)
     {
       final List responseBody = jsonDecode(response.body);
-      _rooms = responseBody.map((e) => Room.fromJson(e)).toList();
-      return _rooms;
+      return responseBody.map((e) => Room.fromJson(e)).toList();
     }
     else
     {

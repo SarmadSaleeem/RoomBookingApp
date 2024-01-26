@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nfs_room_booking/Components/RoomsListView.dart';
 import 'package:nfs_room_booking/Pages/AddRoomsPage.dart';
+import 'package:nfs_room_booking/Pages/BookingsPage.dart';
 import 'package:nfs_room_booking/Rooms/Room.dart';
 import 'package:nfs_room_booking/Rooms/RoomRepository.dart';
 import 'package:nfs_room_booking/Users/User.dart';
@@ -78,14 +79,15 @@ class _HomePageState extends State<HomePage> {
                     title: Text("Home", style: TextStyle(color: Colors.blue.shade900),),
                     onTap: ()
                     {
+                      Navigator.of(context).pop();
 
                     },
                   ),
 
-                  //Rooms
+                  //Add Room
                   ListTile(
                     leading: Icon(Icons.add, color: Colors.blue.shade900,),
-                    title: Text("Add Rooms", style: TextStyle(color: Colors.blue.shade900),),
+                    title: Text("Add Room", style: TextStyle(color: Colors.blue.shade900),),
                     onTap: ()
                     {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddRoomsPage()));
@@ -99,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                     title: Text("Check Bookings", style: TextStyle(color: Colors.blue.shade900),),
                     onTap: ()
                     {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const ViewBooking()));
 
                     },
                   ),
@@ -141,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                   else if (snapshot.hasData)
                   {
                     final rooms = snapshot.data;
-                    return RoomsListView(rooms: rooms!);
+                    return RoomsListView(rooms: rooms!, user: widget.user, );
                   }
                   else
                   {
