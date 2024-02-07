@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:nfs_room_booking/Bookings/Booking.dart';
+import 'package:nfs_room_booking/Bookings/BookingRepository.dart';
 import 'package:nfs_room_booking/Components/RoomsListView.dart';
 import 'package:nfs_room_booking/Pages/AddRoomsPage.dart';
 import 'package:nfs_room_booking/Pages/BookingsPage.dart';
+import 'package:nfs_room_booking/Pages/LoginPage.dart';
 import 'package:nfs_room_booking/Rooms/Room.dart';
 import 'package:nfs_room_booking/Rooms/RoomRepository.dart';
 import 'package:nfs_room_booking/Users/User.dart';
+import 'package:nfs_room_booking/Users/userRepository.dart';
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -17,9 +21,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   RoomRepository roomRepository = RoomRepository();
+  BookingRepository bookingRepository = BookingRepository();
 
   @override
   Widget build(BuildContext context) {
+
+    UserRepository userRepository = UserRepository();
     return Center(
         child: SafeArea(
           child: Container(
@@ -88,9 +95,35 @@ class _HomePageState extends State<HomePage> {
                   ListTile(
                     leading: Icon(Icons.add, color: Colors.blue.shade900,),
                     title: Text("Add Room", style: TextStyle(color: Colors.blue.shade900),),
-                    onTap: ()
+                    onTap: () async
                     {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddRoomsPage()));
+                      var userRoles = await userRepository.getUserRole(widget.user.id);
+
+                      if (userRoles.contains("Administrator"))
+                      {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> AddRoomsPage(user : widget.user)));
+                      }
+
+                      else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Unauthorized Access"),
+                              content: Text("You do not have the necessary permissions to access this feature."),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+
 
                     },
                   ),
@@ -99,9 +132,25 @@ class _HomePageState extends State<HomePage> {
                   ListTile(
                     leading: Icon(Icons.search, color: Colors.blue.shade900,),
                     title: Text("Check Bookings", style: TextStyle(color: Colors.blue.shade900),),
-                    onTap: ()
+                    onTap: () async
                     {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const ViewBooking()));
+                      var userRoles = await userRepository.getUserRole(widget.user.id);
+                      
+                      if(userRoles.contains("Administrator") || userRoles.contains("Reception"))
+                        {
+
+                          Future<List<Booking>> allBookings = bookingRepository.getAllBookings();
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ViewBooking(bookings: allBookings)));
+
+                        }
+
+                      else
+                      {
+                        Future<List<Booking>> userBookings = bookingRepository.getAllBookingsByUserName(widget.user.email);
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ViewBooking(bookings: userBookings,)));
+                      }
+                      
+                      
 
                     },
                   ),
@@ -123,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: ()
                     {
 
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Login()));
                     },
                   ),
 

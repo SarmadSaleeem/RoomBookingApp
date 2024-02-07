@@ -6,8 +6,9 @@ class CustomInputField extends StatelessWidget {
   final IconData iconData;
   final FormFieldValidator<String>? validator;
   final TextEditingController? controller;
+  final Key? elementKey;
 
-  const CustomInputField({super.key, required this.labelText, this.isPassword = false, required this.iconData, this.validator, this.controller});
+  const CustomInputField({super.key, required this.labelText, this.isPassword = false, required this.iconData, this.validator, this.controller, this.elementKey});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class CustomInputField extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40.0),
         child: TextFormField(
+          key: elementKey,
           controller: controller,
           validator: validator,
           obscureText: isPassword,

@@ -25,6 +25,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return GestureDetector(
       onTap: (){
         FocusScope.of(context).unfocus();
@@ -37,6 +39,7 @@ class _LoginState extends State<Login> {
 
         //Scaffold
         child: Scaffold(
+          key: scaffoldKey,
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Center(
@@ -77,7 +80,7 @@ class _LoginState extends State<Login> {
 
                     //Email Input Field
 
-                    CustomInputField(controller: emailController, labelText: "Email", iconData: Icons.email_outlined, validator: (value) {
+                    CustomInputField(key: const ValueKey("EmailInputField"), controller: emailController, labelText: "Email", iconData: Icons.email_outlined, validator: (value) {
 
                       final emailRegex = RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
 
@@ -96,7 +99,7 @@ class _LoginState extends State<Login> {
 
                     // Password Input Field
 
-                    CustomInputField(controller: passwordController, labelText: "Password",
+                    CustomInputField(key: const ValueKey<String>("PasswordInputField"), controller: passwordController, labelText: "Password",
 
                       iconData: Icons.password,
                       isPassword: true,
@@ -131,6 +134,7 @@ class _LoginState extends State<Login> {
 
 
                     CustomButton(
+                      widgetKey: ValueKey<String>("LoginButton"),
                       onTap: () async
                       {
                         if (_formkey.currentState != null && _formkey.currentState!.validate())
@@ -139,11 +143,12 @@ class _LoginState extends State<Login> {
 
                            if (userDetials != null)
                            {
+                             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Login Successful"), key: ValueKey("Login Success"),));
                              Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage(user : userDetials)));
                            }
                            else
                              {
-                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Invalid Email or Password")));
+                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Invalid Email or Password"), key: ValueKey("Invalid"),));
                              }
                         }
                       },

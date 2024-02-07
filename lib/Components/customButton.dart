@@ -7,13 +7,15 @@ class CustomButton extends StatelessWidget {
   final Border? border;
   final Color textColor;
   final VoidCallback onTap;
+  final Key? widgetKey;
 
 
-  const CustomButton({super.key, required this.buttonText, this.gradient, this.border, required this.textColor, required this.onTap});
+  const CustomButton({super.key, required this.buttonText, this.gradient, this.border, required this.textColor, required this.onTap, this.widgetKey});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: widgetKey,
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -28,6 +30,6 @@ class CustomButton extends StatelessWidget {
             style: TextStyle(color: textColor, fontSize: 15.0, fontWeight: FontWeight.bold, letterSpacing: 2),),
         ),
       ),
-    );;
+    );
   }
 }
