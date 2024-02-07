@@ -175,10 +175,11 @@ class SignUpState extends State<SignUp> {
                         if(_formkey.currentState != null && _formkey.currentState!.validate())
                         {
 
-                          User user = (await _userRepository.createUser(firstNameController.text, lastNameController.text, emailController.text, passwordController.text)) as User;
+                          bool isSuccess = (await _userRepository.createUser(firstNameController.text, lastNameController.text, emailController.text, passwordController.text));
 
-                          if (user != null)
+                          if (isSuccess == true)
                           {
+                            var user = await _userRepository.getUserDetailsByEmail(emailController.text);
                             Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage(user: user,)));
                           }
                           else

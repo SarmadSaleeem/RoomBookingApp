@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:nfs_room_booking/Booking/Booking.dart';
+import 'package:nfs_room_booking/Bookings/Booking.dart';
 import 'package:nfs_room_booking/config.dart';
 
 class BookingRepository{
@@ -48,5 +48,24 @@ class BookingRepository{
         throw Exception("Unable to fetch data");
       }
     
+  }
+
+  Future<List<Booking>> getAllBookingsByUserName(String userName) async
+  {
+    var response = await http.get(Uri.parse("${Config.apiUrl}/api/v1/Booking/GetBookingsByUserName?userName=$userName"));
+
+    if (response.statusCode == 200)
+    {
+      final List bookingList = jsonDecode(response.body);
+
+      return bookingList.map((e) => Booking.fromJson(e)).toList();
+
+    }
+
+    else
+    {
+      throw Exception("Unable to fetch data");
+    }
+
   }
 }

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:nfs_room_booking/Booking/Booking.dart';
-import 'package:nfs_room_booking/Booking/BookingRepository.dart';
+import 'package:nfs_room_booking/Bookings/Booking.dart';
 
 class ViewBooking extends StatefulWidget {
-  const ViewBooking({super.key});
+  final Future<List<Booking>> bookings;
+  const ViewBooking({super.key, required this.bookings});
 
   @override
   State<ViewBooking> createState() => _ViewBookingState();
 }
 
 class _ViewBookingState extends State<ViewBooking> {
-  BookingRepository bookingRepository = BookingRepository();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,7 +28,7 @@ class _ViewBookingState extends State<ViewBooking> {
 
 
           body: FutureBuilder<List<Booking>>(
-            future: bookingRepository.getAllBookings(),
+            future: widget.bookings,
             builder: (context, snapshot)
             {
               if (snapshot.connectionState == ConnectionState.waiting)

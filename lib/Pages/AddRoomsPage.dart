@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nfs_room_booking/Components/customButton.dart';
 import 'package:nfs_room_booking/Components/customFields.dart';
+import 'package:nfs_room_booking/Pages/HomePage.dart';
 import 'package:nfs_room_booking/Rooms/RoomRepository.dart';
+import 'package:nfs_room_booking/Users/User.dart';
 class AddRoomsPage extends StatefulWidget {
-  const AddRoomsPage({super.key});
+  final User user;
+  const AddRoomsPage({super.key, required this.user});
 
   @override
   State<AddRoomsPage> createState() => _AddRoomsPageState();
@@ -114,6 +117,7 @@ class _AddRoomsPageState extends State<AddRoomsPage> {
                                 if (isSuccessful)
                                 {
                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Room Created")));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage(user: widget.user)));
                                 }
                                 else
                                 {

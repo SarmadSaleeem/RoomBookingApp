@@ -25,9 +25,9 @@ class UserRepository{
       if (response.statusCode == 200)
       {
 
-        Map<String, dynamic> responseMap = jsonDecode(response.body);
-        String accessToken = responseMap['accessToken'];
-        String refreshToken = responseMap['refreshToken'];
+        //Map<String, dynamic> responseMap = jsonDecode(response.body);
+        //String accessToken = responseMap['accessToken'];
+        //String refreshToken = responseMap['refreshToken'];
 
         // Calling function to get User details
         User userDetails = await getUserDetailsByEmail(email);
@@ -122,6 +122,28 @@ class UserRepository{
     {
       throw Exception("Failed to Fetch User Details");
     }
+  }
+
+  Future<List<String>> getUserRole(String id) async
+  {
+    var url = Uri.parse("${Config.apiUrl}/api/v1/User/GetUserRole?userId=$id");
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200)
+    {
+
+      var data = jsonDecode(response.body);
+      List<String> userRoles = List<String>.from(data);
+
+      return userRoles;
+    }
+
+    else
+      {
+        throw Exception("Unable to Get the Roles");
+      }
+    
   }
   
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import this for date formatting
-import 'package:nfs_room_booking/Booking/BookingRepository.dart';
+import 'package:nfs_room_booking/Bookings/BookingRepository.dart';
 import 'package:nfs_room_booking/Users/User.dart';
 import 'package:nfs_room_booking/Rooms/Room.dart';
 class ConfirmBooking extends StatefulWidget {
